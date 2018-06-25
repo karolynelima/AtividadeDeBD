@@ -144,3 +144,57 @@ DROP TABLE departamento RESTRICT;
 
 
 /****************************************************** DML **************************************************/
+
+/*Inserir dados em todas as tabelas utilizando insert*/
+INSERT INTO departamento
+(CodDepartamento, Descricao) VALUES 
+('102' , 'Comercial'),
+('103' , 'Recursos Humanos'),
+('104' , 'Informática'),
+('105' , 'Tecnologia');
+
+INSERT INTO funcionario
+(CodFuncionario, Nome, CodDepartamento) VALUES 
+('2' , 'Paulo Mendes', '101'),
+('3' , 'Ricardo Freitas', '102'),
+('4' , 'Ricardo Alves', '102'),
+('5' , 'Catarina Rios', '102'),
+('6' , 'Leonor Santos', '103'),
+('7' , 'Alan Passos',  '104'),
+('8' , 'José Maria', '104'); 
+
+INSERT INTO tipo_equipamento
+(CodTipoEquipamento, Descricao) VALUES 
+('1' , 'Computador'),
+('2' , 'Impressora'),
+('3' , 'Fax'),
+('4' , 'Monitor'),
+('5' , 'Fotocopiadora');
+
+
+INSERT INTO equipamento
+(Etiqueta, Marca, Descricao, DataAquisicao, CodTipoEquipamento, CodDepartamento) VALUES 
+('PC001CTB' , 'HP' , 'Computador DualCore 200GB', '2011-2-3', '1', '101' ),
+('PC002CTB' , 'HP' , 'Computador DualCore 200GB', '2012-2-19', '1', '101' ),
+('PC001INF' , 'HP' , 'Computador DualCore 500GB', '2012-12-19', '1', '104' ),
+('PC002INF' , 'HP' , 'Computador DualCore 500GB', '2012-3-20', '1', '104' ),
+('IM001INF' , 'HP' , 'Impressora HP Laserjet', '2012-3-28', '2', '104' );
+
+INSERT INTO avaria
+(CodAvaria, Descricao, DataAtual, Etiqueta, CodFuncionario) VALUES 
+('1' , 'O computador não da partida' , '2011-3-3', 'PC001CTB', '2'),
+('2' , 'Trocar o tonner' , '2012-5-28', 'IM001INF', '7'),
+('3' , 'HD queimado' , '2013-3-18', 'PC002CTB', '3'),
+('4' , 'teclado ruim' , '2014-2-10', 'PC001INF', '5'),
+('5' , 'defeito na tela' , '2014-3-15', 'PC002INF', '8');
+
+INSERT INTO intervencao
+(CodIntervencao, Descricao, DataAtual, CodAvaria, CodFuncionario) VALUES 
+('1' , 'Trocar a placa mãe' , '2011-3-5', '1', '8'),
+('2' , 'Trocar tooner' , '2011-4-10', '2', '6'),
+('3' , 'Trocar HD' , '2012-5-15', '3', '3'),
+('4' , 'Trocar teclado' , '2012-6-20', '4', '4'),
+('5' , 'Trocar tela' , '2013-7-18', '5', '1');
+
+
+
