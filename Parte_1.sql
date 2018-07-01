@@ -220,3 +220,37 @@ SELECT * from equipamento WHERE CodTipoEquipamento =
 
 SELECT nome from funcionario WHERE CodFuncionario =
 (SELECT CodFuncionario from avaria);
+
+
+-- Segunda parte
+
+SELECT COUNT(funcionario.CodFuncionario), departamento.descricao FROM funcionario 
+INNER JOIN departamento ON funcionario.CodDepartamento = departamento.CodDepartamento;
+
+ALTER TABLE funcionario
+ADD salario float(10);
+
+SELECT GREATEST(salario), LEAST(salario), SUM(salario), AVG(salario) from funcionario;
+
+INSERT INTO avaria
+(CodAvaria, Descricao, DataAtual, Etiqueta, CodFuncionario) VALUES 
+('6' , 'Computador com problema' , '2015-3-3', 'PC001CTB', '3'),
+('7' , 'Tela vazada' , '2014-5-02', 'PC002CTB', '4'),
+('8' , 'Bateria ruim' , '2018-4-18', 'PC001INF', '7'),
+('9' , 'Não liga' , '2017-9-02', 'PC002INF', '5'),
+
+SELECT funcionario.nome, COUNT(avaria.CodAvaria) FROM funcionario
+INNER JOIN avaria ON funcionario.CodFuncionario = avaria.CodFuncionario;
+
+SELECT intervencao.descricao, funcionario.nome, avaria.descricao, avaria.DataAtual FROM intervencao
+INNER JOIN funcionario ON funcionario.CodFuncionario=intervencao.CodFuncionario
+INNER JOIN avaria ON avaria.CodAvaria = intervencao.CodAvaria;
+
+-- Função do SQL - YEAR()
+
+SELECT COUNT(equipamento.Etiqueta), YEAR(equipamento.DataAquisicao)
+FROM equipamento GROUP BY YEAR(equipamento.DataAquisicao);
+
+SELECT tipo_equipamento.descricao, COUNT(equipamento.Etiqueta)
+FROM equipamento INNER JOIN tipo_equipamento ON equipamento.CodTipoEquipamento = tipo_equipamento.CodTipoEquipamento
+GROUP BY tipo_equipamento.descricao;
