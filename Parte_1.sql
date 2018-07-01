@@ -123,7 +123,7 @@ CREATE DOMAIN dom_sexo AS CHAR(1) CHECK
 /*Adição do atributo sexo na tabela funcionário e representação do domínio a partir de uma enum*/
 
 ALTER TABLE funcionario
-add column sexo enum('F', 'f', 'M', 'm');
+add column sexo enum ('F', 'f', 'M', 'm');
 
 /*Apagar a tabela departamento com a opção restrict*/
 
@@ -183,7 +183,7 @@ INSERT INTO equipamento
 INSERT INTO avaria
 (CodAvaria, Descricao, DataAtual, Etiqueta, CodFuncionario) VALUES 
 ('1' , 'O computador não da partida' , '2011-3-3', 'PC001CTB', '2'),
-('2' , 'Trocar o tonner' , '2012-5-28', 'IM001INF', '7'),
+('2' , 'Trocar o tonner' , '2012-5-28', 'IM001INF'          , '7'),
 ('3' , 'HD queimado' , '2013-3-18', 'PC002CTB', '3'),
 ('4' , 'teclado ruim' , '2014-2-10', 'PC001INF', '5'),
 ('5' , 'defeito na tela' , '2014-3-15', 'PC002INF', '8');
@@ -198,3 +198,25 @@ INSERT INTO intervencao
 
 
 
+DELETE from funcionario;
+
+DELETE from equipamentos WHERE CodDepartamento =
+(SELECT CodDepartamento from departamento WHERE Descricao = 'Deoartamento Informatica');
+
+UPDATE equipamento SET marca = 'Samsung';
+
+UPDATE funcionario SET CodDepartamento = 101 WHERE nome LIKE 'Ricardo%';
+
+UPDATE funcionario SET CodDepartamento =
+(SELECT CodDepartamento from departamento WHERE descricao = 'Departamento informatica');
+
+SELECT * from funcionarios;
+
+SELECT * from funcionarios WHERE CodDepartamento = 
+(SELECT CodDepartamento from departamento WHERE descricao = 'Comercial');
+
+SELECT * from equipamento WHERE CodTipoEquipamento =
+(SELECT CodTipoEquipamento from tipo_equipamento WHERE descricao = 'Computador');
+
+SELECT nome from funcionario WHERE CodFuncionario =
+(SELECT CodFuncionario from avaria);
