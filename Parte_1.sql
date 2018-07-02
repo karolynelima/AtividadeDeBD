@@ -123,7 +123,7 @@ CREATE DOMAIN dom_sexo AS CHAR(1) CHECK
 /*Adição do atributo sexo na tabela funcionário e representação do domínio a partir de uma enum*/
 
 ALTER TABLE funcionario
-add column sexo enum ('F', 'f', 'M', 'm');
+ADD COLUMN sexo ENUM ('F', 'f', 'M', 'm');
 
 /*Apagar a tabela departamento com a opção restrict*/
 
@@ -197,11 +197,19 @@ INSERT INTO intervencao
 ('5' , 'Trocar tela' , '2013-7-18', '5', '1');
 
 
+/*Copias das tabelas*/
+CREATE TABLE avarianova SELECT * FROM avaria;
+CREATE TABLE departamentonova SELECT * FROM departamento;
+CREATE TABLE equipamentonova SELECT * FROM equipamento;
+CREATE TABLE funcionarionova SELECT * FROM funcionario;
+CREATE TABLE intervencaonova SELECT * FROM intervencao;
+CREATE TABLE tipo_equipamento_nova SELECT * FROM tipo_equipamento;
+
 
 DELETE from funcionario;
 
 DELETE from equipamentos WHERE CodDepartamento =
-(SELECT CodDepartamento from departamento WHERE Descricao = 'Deoartamento Informatica');
+(SELECT CodDepartamento from departamento WHERE Descricao = 'Departamento Informatica');
 
 UPDATE equipamento SET marca = 'Samsung';
 
@@ -227,17 +235,34 @@ SELECT nome from funcionario WHERE CodFuncionario =
 SELECT COUNT(funcionario.CodFuncionario), departamento.descricao FROM funcionario 
 INNER JOIN departamento ON funcionario.CodDepartamento = departamento.CodDepartamento;
 
+
 ALTER TABLE funcionario
 ADD salario float(10);
 
-SELECT GREATEST(salario), LEAST(salario), SUM(salario), AVG(salario) from funcionario;
+UPDATE funcionario
+SET salario = 2500
+WHERE CodFuncionario = 1;
+
+
+UPDATE funcionario
+SET salario = 7000
+WHERE CodFuncionario = 5;
+
+UPDATE funcionario
+SET salario = 7000
+WHERE CodFuncionario = 3;
+
+
+SELECT MAX(salario), MIN(salario), SUM(salario), AVG(salario) from funcionario ;
 
 INSERT INTO avaria
 (CodAvaria, Descricao, DataAtual, Etiqueta, CodFuncionario) VALUES 
 ('6' , 'Computador com problema' , '2015-3-3', 'PC001CTB', '3'),
 ('7' , 'Tela vazada' , '2014-5-02', 'PC002CTB', '4'),
 ('8' , 'Bateria ruim' , '2018-4-18', 'PC001INF', '7'),
-('9' , 'Não liga' , '2017-9-02', 'PC002INF', '5'),
+('9' , 'Não liga' , '2017-9-02', 'PC002INF', '5');
+
+
 
 SELECT funcionario.nome, COUNT(avaria.CodAvaria) FROM funcionario
 INNER JOIN avaria ON funcionario.CodFuncionario = avaria.CodFuncionario;
@@ -254,3 +279,43 @@ FROM equipamento GROUP BY YEAR(equipamento.DataAquisicao);
 SELECT tipo_equipamento.descricao, COUNT(equipamento.Etiqueta)
 FROM equipamento INNER JOIN tipo_equipamento ON equipamento.CodTipoEquipamento = tipo_equipamento.CodTipoEquipamento
 GROUP BY tipo_equipamento.descricao;
+
+/* 8.3
+SELECT YEAR(equipamento.DataAquisicao), tipo_equipamento.descricao, COUNT(equipamento.Etiqueta)
+FROM equipamento INNER JOIN tipo_equipamento
+ON equipamento.CodTipoEquipamento = tipo_equipamento.CodTipoEquipamento
+GROUP BY equipamento.DataAquisicao, tipo_equipamento.descricao;
+*/
+
+SELECT nome, salario from funcionario
+GROUP BY nome, salario
+having salario = (select MAX(salario) from funcionario);
+
+SELECT descricao, etiqueta from avaria
+where etiqueta in (select etiqueta from avaria where etiqueta like 'PC%' );
+
+SELECT CodFuncionario from funcionario 
+WHERE NOT EXISTS (SELECT CodFuncionario FROM intervencao 
+	WHERE intervencao.CodFuncionario = funcionario.CodFuncionario);
+
+-- Mostrar avarias que possuiram intervenções com exists, in  e join
+SELECT CodAvaria from avaria
+WHERE EXISTS(SELECT CodAvaria from intervencao
+	WHERE avaria.CodAvaria = intervencao.CodAvaria);
+    
+SELECT CodAvaria from avaria
+where CodAvaria in (SELECT CodAvaria from intervencao
+	WHERE avaria.CodAvaria = intervencao.CodAvaria );
+
+SELECT avaria.CodAvaria FROM avaria
+INNER JOIN intervencao ON avaria.CodAvaria = intervencao.CodAvaria;
+
+SELECT departamento.descricao, SUM(funcionario.salario) FROM departamento
+INNER JOIN funcionario ON funcionario.CodDepartamento = departamento.CodDepartamento
+GROUP BY departamento.descricao;
+
+SELECT departamento.descricao, AVG(funcionario.salario) FROM departamento
+INNER JOIN funcionario ON funcionario.CodDepartamento = departamento.CodDepartamento
+GROUP BY departamento.descricao
+ORDER BY AVG(funcionario.salario) desc ;
+
