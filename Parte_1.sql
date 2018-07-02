@@ -280,12 +280,11 @@ SELECT tipo_equipamento.descricao, COUNT(equipamento.Etiqueta)
 FROM equipamento INNER JOIN tipo_equipamento ON equipamento.CodTipoEquipamento = tipo_equipamento.CodTipoEquipamento
 GROUP BY tipo_equipamento.descricao;
 
-/* 8.3
 SELECT YEAR(equipamento.DataAquisicao), tipo_equipamento.descricao, COUNT(equipamento.Etiqueta)
 FROM equipamento INNER JOIN tipo_equipamento
 ON equipamento.CodTipoEquipamento = tipo_equipamento.CodTipoEquipamento
-GROUP BY equipamento.DataAquisicao, tipo_equipamento.descricao;
-*/
+GROUP BY YEAR(equipamento.DataAquisicao), tipo_equipamento.descricao;
+
 
 SELECT nome, salario from funcionario
 GROUP BY nome, salario
