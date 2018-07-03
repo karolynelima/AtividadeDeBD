@@ -183,7 +183,7 @@ INSERT INTO equipamento
 INSERT INTO avaria
 (CodAvaria, Descricao, DataAtual, Etiqueta, CodFuncionario) VALUES 
 ('1' , 'O computador não da partida' , '2011-3-3', 'PC001CTB', '2'),
-('2' , 'Trocar o tonner' , '2012-5-28', 'IM001INF'          , '7'),
+('2' , 'Trocar o tonner' , '2012-5-28', 'IM001INF', '7'),
 ('3' , 'HD queimado' , '2013-3-18', 'PC002CTB', '3'),
 ('4' , 'teclado ruim' , '2014-2-10', 'PC001INF', '5'),
 ('5' , 'defeito na tela' , '2014-3-15', 'PC002INF', '8');
@@ -240,17 +240,36 @@ ALTER TABLE funcionario
 ADD salario float(10);
 
 UPDATE funcionario
-SET salario = 2500
+SET salario = 5000
 WHERE CodFuncionario = 1;
 
+UPDATE funcionario
+SET salario = 3000
+WHERE CodFuncionario = 2;
 
 UPDATE funcionario
-SET salario = 7000
+SET salario = 4000
+WHERE CodFuncionario = 3;
+
+UPDATE funcionario
+SET salario = 3000
+WHERE CodFuncionario = 4;
+
+UPDATE funcionario
+SET salario = 8000
 WHERE CodFuncionario = 5;
 
 UPDATE funcionario
-SET salario = 7000
-WHERE CodFuncionario = 3;
+SET salario = 2800
+WHERE CodFuncionario = 6;
+
+UPDATE funcionario
+SET salario = 2000
+WHERE CodFuncionario = 7;
+
+UPDATE funcionario
+SET salario = 5000
+WHERE CodFuncionario = 8;
 
 
 SELECT MAX(salario), MIN(salario), SUM(salario), AVG(salario) from funcionario ;
@@ -316,5 +335,31 @@ GROUP BY departamento.descricao;
 SELECT departamento.descricao, AVG(funcionario.salario) FROM departamento
 INNER JOIN funcionario ON funcionario.CodDepartamento = departamento.CodDepartamento
 GROUP BY departamento.descricao
-ORDER BY AVG(funcionario.salario) desc ;
+ORDER BY AVG(funcionario.salario) desc;
 
+
+/* Falta o 15
+
+
+
+
+
+*/
+
+SELECT departamento.Descricao, funcionario.Nome
+FROM departamento
+CROSS JOIN funcionario;
+
+SELECT departamento.Descricao, funcionario.Nome
+FROM departamento
+CROSS JOIN funcionario ON funcionario.CodDepartamento = departamento.CodDepartamento;
+
+/* Falta o 18
+
+
+
+*/
+
+SELECT departamento.Descricao, funcionario.Nome
+FROM departamento
+INNER JOIN funcionario ON funcionario.CodDepartamento = departamento.CodDepartamento;
