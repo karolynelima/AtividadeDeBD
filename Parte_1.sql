@@ -232,12 +232,9 @@ SELECT nome from funcionario WHERE CodFuncionario =
 
 -- Segunda parte
 
--- Questão 1
-
 SELECT COUNT(funcionario.CodFuncionario), departamento.descricao FROM funcionario 
 INNER JOIN departamento ON funcionario.CodDepartamento = departamento.CodDepartamento;
 
--- Questão 2
 
 ALTER TABLE funcionario
 ADD salario float(10);
@@ -274,11 +271,8 @@ UPDATE funcionario
 SET salario = 5000
 WHERE CodFuncionario = 8;
 
--- Questão 3
 
 SELECT MAX(salario), MIN(salario), SUM(salario), AVG(salario) from funcionario ;
-
--- Questão 4
 
 INSERT INTO avaria
 (CodAvaria, Descricao, DataAtual, Etiqueta, CodFuncionario) VALUES 
@@ -287,54 +281,41 @@ INSERT INTO avaria
 ('8' , 'Bateria ruim' , '2018-4-18', 'PC001INF', '7'),
 ('9' , 'Não liga' , '2017-9-02', 'PC002INF', '5');
 
--- Questão 5
+
 
 SELECT funcionario.nome, COUNT(avaria.CodAvaria) FROM funcionario
 INNER JOIN avaria ON funcionario.CodFuncionario = avaria.CodFuncionario;
-
--- Questão 6
 
 SELECT intervencao.descricao, funcionario.nome, avaria.descricao, avaria.DataAtual FROM intervencao
 INNER JOIN funcionario ON funcionario.CodFuncionario=intervencao.CodFuncionario
 INNER JOIN avaria ON avaria.CodAvaria = intervencao.CodAvaria;
 
 -- Função do SQL - YEAR()
--- Questão 8.1
 
 SELECT COUNT(equipamento.Etiqueta), YEAR(equipamento.DataAquisicao)
 FROM equipamento GROUP BY YEAR(equipamento.DataAquisicao);
 
--- Questão 8.2
-
 SELECT tipo_equipamento.descricao, COUNT(equipamento.Etiqueta)
 FROM equipamento INNER JOIN tipo_equipamento ON equipamento.CodTipoEquipamento = tipo_equipamento.CodTipoEquipamento
 GROUP BY tipo_equipamento.descricao;
-
--- Questão 8.3
 
 SELECT YEAR(equipamento.DataAquisicao), tipo_equipamento.descricao, COUNT(equipamento.Etiqueta)
 FROM equipamento INNER JOIN tipo_equipamento
 ON equipamento.CodTipoEquipamento = tipo_equipamento.CodTipoEquipamento
 GROUP BY YEAR(equipamento.DataAquisicao), tipo_equipamento.descricao;
 
--- Questão 9
 
 SELECT nome, salario from funcionario
 GROUP BY nome, salario
 having salario = (select MAX(salario) from funcionario);
 
--- Questão 10
-
 SELECT descricao, etiqueta from avaria
 where etiqueta in (select etiqueta from avaria where etiqueta like 'PC%' );
-
--- Questão 11
 
 SELECT CodFuncionario from funcionario 
 WHERE NOT EXISTS (SELECT CodFuncionario FROM intervencao 
 	WHERE intervencao.CodFuncionario = funcionario.CodFuncionario);
 
--- Questão 12
 -- Mostrar avarias que possuiram intervenções com exists, in  e join
 SELECT CodAvaria from avaria
 WHERE EXISTS(SELECT CodAvaria from intervencao
@@ -347,13 +328,9 @@ where CodAvaria in (SELECT CodAvaria from intervencao
 SELECT avaria.CodAvaria FROM avaria
 INNER JOIN intervencao ON avaria.CodAvaria = intervencao.CodAvaria;
 
--- Questão 13
-
 SELECT departamento.descricao, SUM(funcionario.salario) FROM departamento
 INNER JOIN funcionario ON funcionario.CodDepartamento = departamento.CodDepartamento
 GROUP BY departamento.descricao;
-
--- Questão 14
 
 SELECT departamento.descricao, AVG(funcionario.salario) FROM departamento
 INNER JOIN funcionario ON funcionario.CodDepartamento = departamento.CodDepartamento
@@ -361,34 +338,27 @@ GROUP BY departamento.descricao
 ORDER BY AVG(funcionario.salario) desc;
 
 
--- Questão 15
+/* Falta o 15
 
-SELECT Nome FROM funcionarionova WHERE salario > (SELECT MAX(salario) 
-FROM funcionarionova WHERE CodDepartamento = (SELECT CodDepartamento FROM departamento WHERE Descricao = 'Informatica')) GROUP BY Nome;
 
--- Questão 16
+
+
+
+*/
 
 SELECT departamento.Descricao, funcionario.Nome
 FROM departamento
 CROSS JOIN funcionario;
 
--- Questão 17
-
 SELECT departamento.Descricao, funcionario.Nome
 FROM departamento
 CROSS JOIN funcionario ON funcionario.CodDepartamento = departamento.CodDepartamento;
 
--- Questão 18
+/* Falta o 18
 
-INSERT  INTO funcionarionova VALUES ('9', 'João SILVA', NULL, 'F', '09876');
 
-DELETE FROM funcionarionova WHERE CodDepartamento = '104';
 
-SELECT * FROM departamentonova AS departamento LEFT JOIN funcionarionova AS funcionarios ON funcionarios.CodDepartamento = departamento.CodDepartamento; 
-
-SELECT * FROM departamentonova AS departamento RIGHT JOIN funcionarionova AS funcionarios ON funcionarios.CodDepartamento = departamento.CodDepartamento;
-
--- Questão 19
+*/
 
 SELECT departamento.Descricao, funcionario.Nome
 FROM departamento
